@@ -95,10 +95,6 @@ public class ChangeAction extends ActionClass {
             Criteria criteria = ToolClass.getCriteria(criterialFilterList);
             query.query(criteria);
         }
-        if (keyAndValueList != null && keyAndValueList.size() > 0) {
-            Criteria criteria = ToolClass.getCriteria(keyAndValueList);
-            query.query(criteria);
-        }
         Update update = new Update();
         for (CriterialFilter row :
                 keyAndValueList) {
