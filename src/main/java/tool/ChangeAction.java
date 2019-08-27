@@ -86,14 +86,17 @@ public class ChangeAction extends ActionClass {
      * @return 影响行数
      * @throws ParseException ISODate转换异常
      */
-    private int updateMultOrOne(List<CriterialFilter> criterialFilterList, List<CriterialFilter> keyAndValueList, String collectName, boolean allSign) throws ParseException {
+    private int updateMultOrOne(List<CriterialFilter> criterialFilterList
+            , List<CriterialFilter> keyAndValueList
+            , String collectName
+            , boolean allSign) throws ParseException {
         if (keyAndValueList == null || keyAndValueList.isEmpty()) {
             return 0;
         }
         Query query = new Query();
         if (criterialFilterList != null && criterialFilterList.size() > 0) {
             Criteria criteria = ToolClass.getCriteria(criterialFilterList);
-            query.query(criteria);
+            query.addCriteria(criteria);
         }
         Update update = new Update();
         for (CriterialFilter row :
