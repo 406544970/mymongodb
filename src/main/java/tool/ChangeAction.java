@@ -59,7 +59,7 @@ public class ChangeAction extends ActionClass {
      * @return 影响行数
      * @throws ParseException ISODate转换异常
      */
-    public int updateFirst(List<CriterialFilter> criterialFilterList, List<CriterialFilter> keyAndValueList, String collectName) throws ParseException {
+    public long updateFirst(List<CriterialFilter> criterialFilterList, List<CriterialFilter> keyAndValueList, String collectName) throws ParseException {
         return updateMultOrOne(criterialFilterList, keyAndValueList, collectName, false);
     }
 
@@ -72,7 +72,7 @@ public class ChangeAction extends ActionClass {
      * @return 影响行数
      * @throws ParseException ISODate转换异常
      */
-    public int updateMult(List<CriterialFilter> criterialFilterList, List<CriterialFilter> keyAndValueList, String collectName) throws ParseException {
+    public long updateMult(List<CriterialFilter> criterialFilterList, List<CriterialFilter> keyAndValueList, String collectName) throws ParseException {
         return updateMultOrOne(criterialFilterList, keyAndValueList, collectName, true);
     }
 
@@ -86,7 +86,7 @@ public class ChangeAction extends ActionClass {
      * @return 影响行数
      * @throws ParseException ISODate转换异常
      */
-    private int updateMultOrOne(List<CriterialFilter> criterialFilterList
+    private long updateMultOrOne(List<CriterialFilter> criterialFilterList
             , List<CriterialFilter> keyAndValueList
             , String collectName
             , boolean allSign) throws ParseException {
@@ -104,9 +104,9 @@ public class ChangeAction extends ActionClass {
             update.set(row.getFieldName(), row.getFieldValue());
         }
         if (allSign)
-            return super.getMongoTemplate().updateMulti(query, update, collectName).getN();
+            return super.getMongoTemplate().updateMulti(query, update, collectName).getModifiedCount();
         else
-            return super.getMongoTemplate().updateFirst(query, update, collectName).getN();
+            return super.getMongoTemplate().updateFirst(query, update, collectName).getModifiedCount();
     }
 
     /**
@@ -115,7 +115,7 @@ public class ChangeAction extends ActionClass {
      * @param data        数据
      * @param collectName collection名称
      */
-    public void savaData(Object data, String collectName) {
+    public void saveData(Object data, String collectName) {
         super.getMongoTemplate().save(data, collectName);
     }
 
@@ -154,8 +154,8 @@ public class ChangeAction extends ActionClass {
      * @param data 指定数据
      * @return 影响条数
      */
-    public int deleteData(Object data) {
-        return super.getMongoTemplate().remove(data).getN();
+    public long deleteData(Object data) {
+        return super.getMongoTemplate().remove(data).getDeletedCount();
     }
     /**
      * 删除指定数据，需要在Model层加入@Document注释，Collection = "???"
@@ -170,9 +170,9 @@ public class ChangeAction extends ActionClass {
      * @param collectName Collection名称
      * @return 影响条数
      */
-    public int deleteDataByCondition(Criteria criteria, String collectName) {
+    public long deleteDataByCondition(Criteria criteria, String collectName) {
         Query query = Query.query(criteria);
-        return super.getMongoTemplate().remove(query, collectName).getN();
+        return super.getMongoTemplate().remove(query, collectName).getDeletedCount();
     }
 
     /**
@@ -183,7 +183,7 @@ public class ChangeAction extends ActionClass {
      * @return 影响条数
      * @throws ParseException ISODate转换异常
      */
-    public int deleteDataByCondition(List<CriterialFilter> criterialFilterList, String collectName) throws ParseException {
+    public long deleteDataByCondition(List<CriterialFilter> criterialFilterList, String collectName) throws ParseException {
         Criteria criteria = ToolClass.getCriteria(criterialFilterList);
         return deleteDataByCondition(criteria, collectName);
     }
@@ -196,8 +196,8 @@ public class ChangeAction extends ActionClass {
      * @param collectName collection名
      * @return 影响条数
      */
-    public int deleteData(Object data, String collectName) {
-        return super.getMongoTemplate().remove(data, collectName).getN();
+    public long deleteData(Object data, String collectName) {
+        return super.getMongoTemplate().remove(data, collectName).getDeletedCount();
     }
 
     /**

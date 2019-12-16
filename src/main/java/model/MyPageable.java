@@ -22,7 +22,7 @@ public class MyPageable implements Pageable {
     }
 
     @Override
-    public int getOffset() {
+    public long getOffset() {
         return (page.getPageNumber() - 1) * page.getPageSize();
     }
 
