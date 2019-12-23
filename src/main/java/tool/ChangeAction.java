@@ -157,11 +157,6 @@ public class ChangeAction extends ActionClass {
     public long deleteData(Object data) {
         return super.getMongoTemplate().remove(data).getDeletedCount();
     }
-    /**
-     * 删除指定数据，需要在Model层加入@Document注释，Collection = "???"
-     * @param data 指定数据
-     * @return 影响条数
-     */
 
     /**
      * 根据条件删除数据
@@ -171,8 +166,12 @@ public class ChangeAction extends ActionClass {
      * @return 影响条数
      */
     public long deleteDataByCondition(Criteria criteria, String collectName) {
-        Query query = Query.query(criteria);
-        return super.getMongoTemplate().remove(query, collectName).getDeletedCount();
+        if (criteria != null) {
+            Query query = Query.query(criteria);
+            return super.getMongoTemplate().remove(query, collectName).getDeletedCount();
+        }
+        else
+            return 0;
     }
 
     /**
