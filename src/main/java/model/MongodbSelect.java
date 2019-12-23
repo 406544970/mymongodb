@@ -93,12 +93,16 @@ public final class MongodbSelect {
         this.dataTotal = 0;
         setPageAllPara(pageSign);
         fieldNameLists = new ArrayList<>();
-        for (Field field : className.getDeclaredFields()) {
-            field.setAccessible(true);
-            FieldModel fieldModel = new FieldModel();
-            fieldModel.setFieldName(field.getName());
-            fieldModel.setFieldType(field.getType().toString());
-            fieldNameLists.add(fieldModel);
+        Class<T> currentClass = className;
+        while (currentClass != null){
+            for (Field field : currentClass.getDeclaredFields()) {
+                field.setAccessible(true);
+                FieldModel fieldModel = new FieldModel();
+                fieldModel.setFieldName(field.getName());
+                fieldModel.setFieldType(field.getType().toString());
+                fieldNameLists.add(fieldModel);
+            }
+            currentClass = (Class<T>) currentClass.getSuperclass();
         }
     }
 

@@ -92,6 +92,9 @@ public class SelectAction extends ActionClass {
             }
         }
         if (mongodbSelect.getPageNumber() > 0 && mongodbSelect.getPageSize() > 0) {
+            if (pageModel == null) {
+                pageModel = new PageModel();
+            }
             pageModel.setPageSize(mongodbSelect.getPageSize());
             pageModel.setPageNumber(mongodbSelect.getPageNumber());
         }
@@ -102,10 +105,10 @@ public class SelectAction extends ActionClass {
         }
         Criteria criteria = ToolClass.getCriteria(mongodbSelect.getCriterialFilterList());
         if (criteria != null) {
-//            Criteria orCriteria = ToolClass.getCriteria(mongodbSelect.getOrCriterialFilterList());
-//            if (orCriteria != null) {
-//                criteria = criteria.orOperator(orCriteria);
-//            }
+            Criteria orCriteria = ToolClass.getCriteria(mongodbSelect.getOrCriterialFilterList());
+            if (orCriteria != null) {
+                criteria = criteria.orOperator(orCriteria);
+            }
             query.addCriteria(criteria);
         }
         if (mongodbSelect.getPageNumber() > 0 && mongodbSelect.getPageSize() > 0) {
